@@ -1,11 +1,16 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from typing import Dict, List
-import openpyxl
 import io
 from datetime import datetime
 import pandas as pd
-import pyexcel as pe
 from collections import defaultdict
+
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.orm import sessionmaker
+
+DATABASE_URL = "postgresql+asyncpg://user:password@localhost:5432/dbname"
+engine = create_async_engine(DATABASE_URL)
+AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 app = FastAPI()
 
@@ -19,22 +24,25 @@ def parse_excel_to_dict(file_content: bytes) -> List[List]:
 
         # print(dates)
 
-        readings_dict = defaultdict(list)
+        readings_list = list()
         
         data_list = df.values.tolist()
 
         for i in range(2, len(data_list)):
+            device_id = int(data_list[i][1])
             for j in range(len(dates)):
-                readings_dict[int(data_list[i][1])].append(
-                        {
-                        'date': dates[j],
+                readings_list.append(
+                    {
+                        'device_id': device_id,
+                        'time': dates[j],
                         'A_plus': data_list[i][j],
                         'A_minus': data_list[i][j + 3],
                         'B_plus': data_list[i][j + 4],
                         'B_minus': data_list[i][j + 5],
-                        }
+                    }
                 )
-            print(readings_dict)
+        print(readings_list)
+        return readings_list
         
     except Exception as e:
         raise HTTPException(500, detail=f"Ошибка обработки файла: {str(e)}")
@@ -47,7 +55,6 @@ async def upload_excel(file: UploadFile = File(...)):
     try:
         contents = await file.read()
         excel_data = parse_excel_to_dict(contents)
-        return excel_data
         
     except HTTPException as http_exc:
         raise http_exc
