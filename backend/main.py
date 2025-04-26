@@ -10,7 +10,7 @@ from .models import Reading
 
 app = FastAPI()
 
-def parse_excel_to_dict(file_content: bytes) -> List[List]:
+def parse_excel_to_list(file_content: bytes) -> List[List]:
     try:
         df = pd.read_excel(io.BytesIO(file_content))
 
@@ -37,7 +37,7 @@ def parse_excel_to_dict(file_content: bytes) -> List[List]:
                         'B_minus': data_list[i][j + 5],
                     }
                 )
-        print(readings_list)
+        # print(readings_list)
         return readings_list
         
     except Exception as e:
