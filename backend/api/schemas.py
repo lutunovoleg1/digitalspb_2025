@@ -1,12 +1,30 @@
+from typing import List, Dict, Optional
 from pydantic import BaseModel
-import datetime
-from typing import Optional
+from datetime import datetime, date
 
 
-class Reading(BaseModel):
-    time: datetime
-    device_id: int
-    A_plus: Optional(float)
-    A_minus: Optional(float)
-    R_plus: Optional(float)
-    R_minus: Optional(float)
+class HalfHourReading(BaseModel):
+    timestamp: datetime
+    value: float
+
+
+class DailyReading(BaseModel):
+    date: date
+    value: float
+
+
+class VisualizationData(BaseModel):
+    half_hour_readings_A_plus: List[HalfHourReading]
+    half_hour_readings_P_plus: List[HalfHourReading]
+    daily_readings_T0_A_plus: List[DailyReading]
+
+
+class SuspiciousMeter(BaseModel):
+    serial_number: str
+    reason: str
+    suspicion_level: float
+
+
+class Report(BaseModel):
+    suspicious_meters: List[SuspiciousMeter]
+    visualization_data: Dict[str, VisualizationData]
