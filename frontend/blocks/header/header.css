@@ -1,0 +1,14 @@
+.header {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    height: 10vh;
+    width: 100%;
+
+    z-index: 2;
+
+    border-radius: 10px;
+    border-bottom: 1px solid #fff;
+}

@@ -15,5 +15,6 @@
 @import url(../blocks/upload/__file-item/upload__file-item.css);
 
 @import url(../blocks/footer/footer.css);
+@import url(../blocks/footer/__logo/footer__logo.css);
 @import url(../blocks/footer/__list/footer__list.css);
 @import url(../blocks/footer/__list-item/footer__list-item.css);

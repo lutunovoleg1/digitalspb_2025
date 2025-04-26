@@ -1,0 +1,26 @@
+.upload__form-submit-button {
+    font-family: "Bebas Neue", "Arial Narrow", sans-serif;
+
+    margin: 10px 5px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+
+    padding: 16px 21px;
+
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+
+    transition: all 0.3s ease;
+}
+
+.upload__form-submit-button:hover {
+    background-color: #4476a0;
+    border: 1px solid #4476a0;
+}

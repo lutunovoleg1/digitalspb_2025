@@ -1,0 +1,25 @@
+.upload__file-item {
+    font-family: "Bebas Neue", "Arial Narrow", sans-serif;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    font-weight: 300;
+    letter-spacing: 0.5px;
+
+    margin-top: 20px;
+    text-align: left;
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid #fff;
+
+    padding: 10px;
+    background: #fff;
+
+    border-bottom: 1px solid #fff;
+}
+
+.upload__file-item:last-child {
+    border-bottom: none;
+}

@@ -1,0 +1,25 @@
+.upload__form-choose-button {
+    font-family: "Bebas Neue", "Arial Narrow", sans-serif;
+
+    margin: 10px 5px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+
+    padding: 16px 21px;
+
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+
+    background-color: #fff;
+    color: #000;
+
+    transition: all 0.3s ease;
+}
+
+.upload__form-choose-button:hover {
+    color: #fff;
+    background-color: #4476a0;
+}
