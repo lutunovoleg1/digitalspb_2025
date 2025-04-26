@@ -1,0 +1,9 @@
+.header-graphs {
+    color: #fff;
+
+    display: flex;
+
+    flex-direction: column;
+
+    width: 100%;
+}

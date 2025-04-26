@@ -1,0 +1,9 @@
+.page-graphs {
+    font-family: "Bebas Neue", "Arial Narrow", sans-serif;
+
+    display: flex;
+
+    flex-direction: column;
+
+    background-color: #15344e;
+}

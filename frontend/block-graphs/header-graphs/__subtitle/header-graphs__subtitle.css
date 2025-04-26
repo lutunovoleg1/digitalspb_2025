@@ -1,0 +1,14 @@
+.header-graphs__subtitle {
+    font-family: "Bebas Neue", "Arial Narrow", sans-serif;
+
+    display: flex;
+
+    margin: 10px;
+    padding: 10px;
+
+    width: 20%;
+
+    box-shadow: inset 1px 1px 10px 5px #08141d;
+
+    background-color: #122b3f;
+}
