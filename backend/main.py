@@ -5,12 +5,8 @@ from datetime import datetime
 import pandas as pd
 from collections import defaultdict
 
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
-
-DATABASE_URL = "postgresql+asyncpg://user:password@localhost:5432/dbname"
-engine = create_async_engine(DATABASE_URL)
-AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+from .database import AsyncSessionLocal
+from .models import Reading
 
 app = FastAPI()
 
@@ -45,12 +41,12 @@ def parse_excel_to_dict(file_content: bytes) -> List[List]:
         return readings_list
         
     except Exception as e:
-        raise HTTPException(500, detail=f"Ошибка обработки файла: {str(e)}")
+        raise HTTPException(500, detail=f"File processing error: {str(e)}")
 
 @app.post("/upload/")
 async def upload_excel(file: UploadFile = File(...)):
     if not file.filename.endswith(('.xls', '.xlsx')):
-        raise HTTPException(400, detail="Только Excel файлы (.xls, .xlsx)")
+        raise HTTPException(400, detail="Wrong file type")
     
     try:
         contents = await file.read()
@@ -59,4 +55,17 @@ async def upload_excel(file: UploadFile = File(...)):
     except HTTPException as http_exc:
         raise http_exc
     except Exception as e:
-        raise HTTPException(500, detail=f"Ошибка: {str(e)}")
+        raise HTTPException(500, detail=str(e))
+
+    async with AsyncSessionLocal() as session:
+        try:
+
+            await session.execute(
+                insert(Reading),
+                excel_data,
+            )
+            await session.commit()
+            
+        except Exception as e:
+            await session.rollback()
+            raise HTTPException(400, detail=str(e))
