@@ -1,0 +1,16 @@
+.meter-list-item {
+    margin: 10px 0;
+    background: transparent;
+
+    border: 1px solid #fff;
+
+    color: #fff;
+
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.meter-list-item:hover {
+    background-color: #e0e0e0;
+    color: #000;
+}
