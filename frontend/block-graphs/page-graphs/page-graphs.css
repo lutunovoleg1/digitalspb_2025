@@ -5,5 +5,30 @@
 
     flex-direction: column;
 
-    background-color: #15344e;
+    width: 100vw;
+    height: 100vh;
+
+    background-image: url(/frontend/images/b83ffb5a6b74b5ef38c6ce2a640ee956.png);
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    z-index: -1;
+}
+
+.page-graphs::before {
+    content: "";
+
+    background-color: #2a2c2f;
+    opacity: 0.5;
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 0;
 }

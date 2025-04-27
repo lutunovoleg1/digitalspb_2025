@@ -1,12 +1,22 @@
 .meter-container {
     border: 1px solid #ddd;
 
-    width: 90%;
+    border-radius: 20px;
+
+    width: 70vw;
+    height: 70vh;
 
     padding: 20px;
-    margin: 30px;
+    margin: 10px;
+
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-    background-color: #ffffff;
+    background-image: url(/frontend/images/background-01.jpg);
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    z-index: -1;
+
     display: none;
 }

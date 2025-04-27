@@ -8,9 +8,12 @@
     background-color: #292944;
 
     background-image: url(/frontend/images/b83ffb5a6b74b5ef38c6ce2a640ee956.png);
-    background-size: cover;
-    background-position: center;
+
     background-attachment: fixed;
+
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
 
     height: 100vh;
 

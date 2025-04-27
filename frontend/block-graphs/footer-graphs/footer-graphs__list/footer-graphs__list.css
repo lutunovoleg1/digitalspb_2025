@@ -1,0 +1,9 @@
+.footer-graphs__list {
+    display: flex;
+
+    font-family: "Bebas Neue", "Arial Narrow", sans-serif;
+
+    flex-direction: row;
+
+    color: #fff;
+}

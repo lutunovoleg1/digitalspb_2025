@@ -1,0 +1,7 @@
+.meter-list-container {
+    display: flex;
+
+    width: 25vw;
+
+    flex-direction: column;
+}

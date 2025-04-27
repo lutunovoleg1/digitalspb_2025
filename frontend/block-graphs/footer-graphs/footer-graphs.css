@@ -1,0 +1,13 @@
+.footer-graphs {
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 20px;
+
+    border-radius: 10px;
+    border-top: 1px solid #fff;
+    height: 10vh;
+
+    z-index: 3;
+}

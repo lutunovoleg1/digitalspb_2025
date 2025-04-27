@@ -3,7 +3,16 @@
 
     flex-direction: row;
 
-    width: 100%;
+    width: 100vw;
+    height: 80vh;
 
     justify-content: space-between;
+
+    position: relative;
+}
+
+.chart-container {
+    height: 29vh;
+    width: 100%;
+    margin-bottom: 0px;
 }
