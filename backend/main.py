@@ -14,10 +14,15 @@ from api.schemas import Report
 from api.excel_parser import parse_excel_to_list
 from math import ceil
 
+from api.model.prediction import prediction
+from api.model.report_maker import make_report
+
 
 app = FastAPI()
 
 CHUNK_SIZE = 500
+
+REPORT_DICT = {}
 
 async def insert_in_chunks(session, data):
     total = len(data)
@@ -53,13 +58,33 @@ async def upload_excel(file: UploadFile = File(...)):
             await session.rollback()
             raise HTTPException(500, detail=f"Database error: {str(e)}")
 
+    async with AsyncSessionLocal() as session:
+        try:
+            result = await session.execute(select(Reading))
+            rows = result.scalars().all()  # Получаем список ORM-объектов
+
+        except Exception as e:
+            raise HTTPException(500, detail=f"Database error: {str(e)}")
+
+    data = [row.__dict__ for row in rows]
+
+    # Удаляем служебный атрибут SQLAlchemy
+    for d in data:
+        d.pop('_sa_instance_state', None)
+
+    # Создаем DataFrame
+    df = pd.DataFrame(data)
+
+    predicted_criminals = prediction(df)
+
+
+    REPORT_DICT = make_report(df, predicted_criminals)
+
+
 @app.get("/report/")
 async def return_report_info():
     try:
-        response_dict = makeup_report()
-        response = Report(response_dict)
-
-        return response
+        return REPORT_DICT
     
     except Exception as e:
         raise HTTPException(500, detail=f'Failed processing report:{e}')
