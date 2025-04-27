@@ -6,25 +6,38 @@
 
         <link rel="stylesheet" href="pages/index.css" />
         <link rel="stylesheet" href="vendor/normalize.css" />
+        <link rel="icon" href="./images/a8e3de34-258f-41dd-b311-fbaabb8d74ce-fotor-bg-remover-20250425234920-icon.png" type="image/png" />
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        <title>Document</title>
+        <title>Аномальные показания</title>
     </head>
     <body>
-        <div class="page-graphs">
+        <div class="page-graphs page-graphs__blur">
             <header class="header-graphs">
-                <h1 class="header-graphs__title">Анализ подозрительных счетчиков</h1>
-
-                <h2 class="header-graphs__subtitle">Список счетчиков</h2>
+                <img class="header-graphs__logo" src="./images/Made with insMind-a8e3de34-258f-41dd-b311-fbaabb8d74ce (1).png" />
             </header>
             <main class="main-graphs">
                 <section class="meters">
-                    <ul id="meters-list" class="meter-list"></ul>
+                    <div class="meter-list-container">
+                        <h2 class="meter-list__subtitle">Список счетчиков</h2>
+
+                        <ul id="meters-list" class="meter-list"></ul>
+                    </div>
 
                     <div id="meters-container"></div>
                 </section>
             </main>
+
+            <footer class="footer-graphs">
+                <img class="footer-graphs__logo" src="./images/a8e3de34-258f-41dd-b311-fbaabb8d74ce-fotor-bg-remover-20250425234920-icon.png" />
+
+                <ul class="footer-graphs__list">
+                    <li class="footer-graphs__list-item">Литвинов Олег Александрович</li>
+                    <li class="footer-graphs__list-item">7 (XXX) XXX-XX-XX</li>
+                    <li class="footer-graphs__list-item">https://github.com/lutunovoleg1/digitalspb_2025</li>
+                </ul>
+            </footer>
         </div>
 
         <script src="script-graphs.js"></script>

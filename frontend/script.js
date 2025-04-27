@@ -3,56 +3,51 @@ document.addEventListener("DOMContentLoaded", () => {
     const fileList = document.getElementById("upload__file-list");
     const uploadForm = document.getElementById("upload__form");
 
-    // Обработка выбора файлов
     fileInput.addEventListener("change", () => {
-        fileList.innerHTML = ""; // Очищаем список перед обновлением
+        fileList.innerHTML = "";
         if (fileInput.files.length > 0) {
-            Array.from(fileInput.files).forEach((file, index) => {
-                const fileItem = document.createElement("div");
-                fileItem.className = "upload__file-item";
-                fileItem.innerHTML = `
-                    <span>${file.name} (${formatBytes(file.size)})</span>
-                    <span class="upload__file-remove-btn" data-index="${index}">×</span>
-                `;
-                fileList.appendChild(fileItem);
-            });
-
-            // Удаление файла из списка
-            document.querySelectorAll(".upload__file-remove-btn").forEach((btn) => {
-                btn.addEventListener("click", (e) => {
-                    const index = e.target.getAttribute("data-index");
-                    removeFileFromList(index);
-                });
-            });
+            const file = fileInput.files[0];
+            const fileItem = document.createElement("div");
+            fileItem.className = "upload__file-item";
+            fileItem.innerHTML = `
+          <span>${file.name} (${formatBytes(file.size)})</span>
+        `;
+            fileList.appendChild(fileItem);
         }
     });
 
-    // Отправка формы (заглушка)
     uploadForm.addEventListener("submit", (e) => {
         e.preventDefault();
+
         if (fileInput.files.length === 0) {
-            alert("Пожалуйста, выберите файлы!");
+            alert("Пожалуйста, выберите файл!");
             return;
         }
-        alert("Файлы отправлены на сервер! (здесь должна быть AJAX-загрузка)");
-        // Реальная отправка через Fetch API или XMLHttpRequest
+
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append("file", file);
+
+        fetch("http://localhost:8000/upload/", {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Ошибка загрузки: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then((result) => {
+                alert("Файл успешно загружен!");
+                console.log(result);
+            })
+            .catch((error) => {
+                console.error("Ошибка:", error);
+                alert("Произошла ошибка при загрузке файла.");
+            });
     });
 
-    // Удаление файла из списка
-    function removeFileFromList(index) {
-        const files = Array.from(fileInput.files);
-        files.splice(index, 1);
-
-        // Создаем новый FileList (через DataTransfer)
-        const dataTransfer = new DataTransfer();
-        files.forEach((file) => dataTransfer.items.add(file));
-        fileInput.files = dataTransfer.files;
-
-        // Обновляем список
-        fileInput.dispatchEvent(new Event("change"));
-    }
-
-    // Форматирование размера файла
     function formatBytes(bytes) {
         if (bytes === 0) return "0 Bytes";
         const k = 1024;
@@ -69,8 +64,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     dropArea.addEventListener("drop", (e) => {
         e.preventDefault();
-        dropArea.style.border = "none";
-        fileInput.files = e.dataTransfer.files;
-        fileInput.dispatchEvent(new Event("change"));
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            const file = files[0];
+            if (!file.name.endsWith(".xls") && !file.name.endsWith(".xlsx")) {
+                alert("Разрешены только файлы Excel (.xls, .xlsx)");
+                return;
+            }
+            fileInput.files = files;
+            fileInput.dispatchEvent(new Event("change"));
+        }
     });
 });

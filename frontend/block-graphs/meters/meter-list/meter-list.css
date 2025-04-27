@@ -1,4 +1,24 @@
 .meter-list {
+    margin: 0;
+    padding: 0;
+
     list-style-type: none;
-    width: 30%;
+}
+
+.meter-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.meter-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.meter-list::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.meter-list::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
 }
