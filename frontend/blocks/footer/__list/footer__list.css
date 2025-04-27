@@ -3,7 +3,13 @@
 
     font-family: "Bebas Neue", "Arial Narrow", sans-serif;
 
+    align-items: center;
+
+    justify-content: space-between;
+
     flex-direction: row;
+
+    width: 100%;
 
     color: #fff;
 }

@@ -18,6 +18,7 @@
 @import url(../blocks/footer/__logo/footer__logo.css);
 @import url(../blocks/footer/__list/footer__list.css);
 @import url(../blocks/footer/__list-item/footer__list-item.css);
+@import url(../blocks/footer/__href/footer__href.css);
 
 @import url(../block-graphs/page-graphs/page-graphs.css);
 
@@ -37,3 +38,4 @@
 @import url(../block-graphs/footer-graphs/__logo/footer-graphs__logo.css);
 @import url(../block-graphs/footer-graphs/footer-graphs__list/footer-graphs__list.css);
 @import url(../block-graphs/footer-graphs/footer-graphs__list-item/footer-graphs__list-item.css);
+@import url(../block-graphs/footer-graphs/__href/footer-graphs__href.css);
