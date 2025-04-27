@@ -3,21 +3,33 @@ from typing import Dict, List
 import io
 from datetime import datetime
 from collections import defaultdict
+import pandas as pd
 
 from api.database import AsyncSessionLocal
 from api.models import Reading
 
-from sqlalchemy import insert, text
+from sqlalchemy import insert, text, select
 
 from api.schemas import Report
 
 from api.excel_parser import parse_excel_to_list
 from math import ceil
 
+from api.model.prediction import prediction
+from api.model.report_maker import make_report
+
+from fastapi.encoders import jsonable_encoder
+import json
+import os
+
 
 app = FastAPI()
 
 CHUNK_SIZE = 500
+
+REPORT_DICT = {}
+
+REPORT_PATH = 'report.json'
 
 async def insert_in_chunks(session, data):
     total = len(data)
@@ -47,19 +59,43 @@ async def upload_excel(file: UploadFile = File(...)):
     async with AsyncSessionLocal() as session:
         try:
             await insert_in_chunks(session, excel_data)
-            return {"status": f"Inserted {len(excel_data)} records"}
-            
         except Exception as e:
             await session.rollback()
             raise HTTPException(500, detail=f"Database error: {str(e)}")
 
-@app.get("/report/")
-async def return_report_info():
-    try:
-        response_dict = makeup_report()
-        response = Report(response_dict)
+    async with AsyncSessionLocal() as session:
+        try:
+            result = await session.execute(select(Reading))
+            rows = result.scalars().all()
+        except Exception as e:
+            raise HTTPException(500, detail=f"Database error: {str(e)}")
 
-        return response
-    
+    data = [row.__dict__ for row in rows]
+    for d in data:
+        d.pop('_sa_instance_state', None)
+
+    df = pd.DataFrame(data)
+
+    predicted_criminals = prediction(df)
+    print(f"Suspicious devices count: {len(predicted_criminals)}")
+
+    report_dict = make_report(df, predicted_criminals)
+    print(report_dict)
+
+    json_compatible_report = jsonable_encoder(report_dict)
+
+    with open(REPORT_PATH, 'w', encoding='utf-8') as f:
+        json.dump(json_compatible_report, f, ensure_ascii=False, indent=4)
+
+    return {"status": f"Inserted {len(excel_data)} records, report saved"}
+
+@app.get("/report/", response_model=Report)
+async def return_report_info():
+    if not os.path.exists(REPORT_PATH):
+        raise HTTPException(status_code=404, detail="Report not available yet")
+    try:
+        with open(REPORT_PATH, 'r', encoding='utf-8') as f:
+            report_dict = json.load(f)
+        return report_dict
     except Exception as e:
-        raise HTTPException(500, detail=f'Failed processing report:{e}')
+        raise HTTPException(status_code=500, detail=f'Failed processing report: {e}')
