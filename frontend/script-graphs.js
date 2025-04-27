@@ -169,8 +169,6 @@ function showMeterData(data, serialNumber) {
 
 // Инициализация при загрузке страницы
 document.addEventListener("DOMContentLoaded", async () => {
-    console.log("111");
-
     const data = await loadData();
     if (!data) {
         alert("Данные не загружены. Проверьте подключение к серверу.");
